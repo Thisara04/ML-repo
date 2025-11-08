@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-# Load model and scaler
+# Load model and scaler.
 model = joblib.load("best_model.pkl")
 scaler = joblib.load("scaler.pkl")
 
