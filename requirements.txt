@@ -6,3 +6,4 @@ catboost
 pandas
 numpy
 imblearn
+yfinance
