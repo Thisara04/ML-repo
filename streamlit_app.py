@@ -55,12 +55,14 @@ if st.button("🔮 Predict Sleep Disorder"):
     prediction = model.predict(scaled_input)[0]
 
     # --- REVERSE MAPPING ---
+    # --- REVERSE MAPPING ---
     reverse_map = {
         0: "No Disorder",
         1: "Sleep Apnea",
         2: "Insomnia"
     }
-    disorder_name = reverse_map.get(prediction, "Unknown")
+    disorder_name = reverse_map.get(int(prediction), "Unknown")  # <-- cast to int
+
 
     # --- DISPLAY RESULT ---
     st.subheader("🧠 Prediction Result")
