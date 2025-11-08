@@ -7,3 +7,5 @@ pandas
 numpy
 imblearn
 yfinance
+altair
+PIL
