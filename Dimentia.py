@@ -11,24 +11,58 @@ def dummy_predict(input_df):
 
 def user_input_features():
     # --- Categorical features with mappings ---
-    SEX = st.selectbox("Gender", ["Male", "Female", "Unknown"])
-    SEX_val = 0 if SEX=="Male" else 1 if SEX=="Female" else np.nan
+    SEX = st.selectbox("Gender", ["Male", "Female"])
+    SEX_val = 1 if SEX=="Male" else 2 if SEX=="Female" #ok
 
     HISPANIC = st.selectbox("Hispanic/Latino Ethnicity", ["No", "Yes", "Unknown"])
-    HISPANIC_val = 0 if HISPANIC=="No" else 1 if HISPANIC=="Yes" else np.nan
+    HISPANIC_val = 0 if HISPANIC=="No" else 1 if HISPANIC=="Yes" else np.nan  #ok
 
-    HISPOR = st.number_input("Hispanic Origin (HISPOR)", min_value=0, max_value=8, value=0)
+    HISPOR = st.selectbox(
+    "Hispanic Origin (HISPOR)",
+    ["Mexican", "Puerto Rican", "Cuban", "Dominican", "Central American", "South American", "Other", "Unknown"])
+    HISPOR_val = {
+    "Mexican": 1,
+    "Puerto Rican": 2,
+    "Cuban": 3,
+    "Dominican": 4,
+    "Central American": 5,
+    "South American": 7,
+    "Other": 8,
+    "Unknown": np.nan}[HISPOR]  #ok 
 
-    RACE = st.selectbox("Race", ["White", "Black", "Asian", "Native", "Other", "Unknown"])
-    RACE_val = 0 if RACE=="White" else 1 if RACE=="Black" else 2 if RACE=="Asian" else 3 if RACE=="Native" else 4 if RACE=="Other" else np.nan
+    RACE = st.selectbox("Race", ["White", "Black/African American", "American Indian","Native Hawaiian", "Asian", "Other", "Unknown"])
+    RACE_val = 1 if RACE=="White" else 2 if RACE=="Black/African American" else 3 if RACE=="American Indian" else 4 if RACE=="Native Hawaiian" else 5 if RACE=="Asian" else 6 if RACE=="Other" else np.nan
+    #ok
+    
+    PRIMLANG = st.selectbox(
+    "Primary Language",
+    ["English", "Spanish", "Mandarin", "Cantonese", "Russian", "Japanese", "Other", "Unknown"])
+    PRIMLANG_val = {
+    "English": 1,
+    "Spanish": 2,
+    "Mandarin": 3,
+    "Cantonese": 4,
+    "Russian": 5,
+    "Japanese": 6,
+    "Other": 7,
+    "Unknown": np.nan}[PRIMLANG] #ok
 
-    PRIMLANG = st.selectbox("Primary Language", ["English", "Spanish", "Other", "Unknown"])
-    PRIMLANG_val = 0 if PRIMLANG=="English" else 1 if PRIMLANG=="Spanish" else 2 if PRIMLANG=="Other" else np.nan
+    educ_options = [str(i) for i in range(0, 31)] + ["Unknown"]
+    EDUC = st.selectbox("Years of Education", educ_options)
+    EDUC_val = np.nan if EDUC == "Unknown" else int(EDUC) #ok
 
-    EDUC = st.number_input("Years of Education", min_value=0, max_value=30, value=16)
 
-    MARISTAT = st.selectbox("Marital Status", ["Single", "Married", "Other", "Unknown"])
-    MARISTAT_val = 0 if MARISTAT=="Single" else 1 if MARISTAT=="Married" else 2 if MARISTAT=="Other" else np.nan
+    MARISTAT = st.selectbox(
+    "Marital Status",
+    ["Married", "Widowed", "Divorced", "Separated", "Never married/Annulled", "Domestic partner", "Unknown"])
+    MARISTAT_val = (
+    1 if MARISTAT == "Married" else
+    2 if MARISTAT == "Widowed" else
+    3 if MARISTAT == "Divorced" else
+    4 if MARISTAT == "Separated" else
+    5 if MARISTAT == "Never married/Annulled" else
+    6 if MARISTAT == "Domestic partner" else
+    np.nan) #ok
 
     NACCLIVS = st.number_input("Living Situation", min_value=0, max_value=10, value=0)
 
@@ -40,9 +74,10 @@ def user_input_features():
     HANDED = st.selectbox("Handedness", ["Right", "Left", "Unknown"])
     HANDED_val = 1 if HANDED=="Right" else 2 if HANDED=="Left" else np.nan
 
-    NACCAGE = st.number_input("Age", min_value=0, max_value=120, value=70)
+    NACCAGE = st.number_input("Person's Age", min_value=18, max_value=120, value=70)
     NACCAGEB = st.number_input("Age at Baseline", min_value=0, max_value=120, value=70)
-    INBIRYR = st.number_input("Birth Year", min_value=1900, max_value=2025, value=1950)
+    
+    INBIRYR = st.number_input("Co-participant Birth Year", min_value=1875, max_value=2025, value=1950) #ok
     NEWINF = st.number_input("New Info", min_value=-4, max_value=9, value=-4)
     INRELTO = st.number_input("Relationship", min_value=0, max_value=10, value=0)
     INLIVWTH = st.number_input("Lives With", min_value=0, max_value=10, value=0)
@@ -152,7 +187,7 @@ def user_input_features():
 
     # --- Combine all into a dict ---
     data = {
-        "SEX": SEX_val, "HISPANIC": HISPANIC_val, "HISPOR": HISPOR, "RACE": RACE_val,
+        "SEX": SEX_val, "HISPANIC": HISPANIC_val, "HISPOR": HISPOR_val, "RACE": RACE_val,
         "PRIMLANG": PRIMLANG_val, "EDUC": EDUC, "MARISTAT": MARISTAT_val, "NACCLIVS": NACCLIVS,
         "INDEPEND": INDEPEND_val, "RESIDENC": RESIDENC, "HANDED": HANDED_val,
         "NACCAGE": NACCAGE, "NACCAGEB": NACCAGEB, "INBIRYR": INBIRYR, "NEWINF": NEWINF,
