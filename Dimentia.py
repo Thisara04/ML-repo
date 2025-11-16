@@ -9,18 +9,22 @@ st.title("Dementia Risk Prediction")
 st.write("Enter patient details to estimate dementia risk.")
 st.write("Assist a co-participant to help the process!!.")
 
-
-MODEL_URL = "https://huggingface.co/ThisaraAdhikari04/dementia-risk-model/resolve/main/Dimentia_model.pkl"
+# --- Model download and loading ---
+MODEL_URL = "https://huggingface.co/ThisaraAdhikari04/dementia-risk-model/resolve/main/Dementia_model.pkl"
 MODEL_PATH = "Dementia_model.pkl"
 
-if not os.path.exists(MODEL_PATH):
-    with st.spinner("Downloading model..."):
-        r = requests.get(MODEL_URL)
-        with open(MODEL_PATH, "wb") as f:
-            f.write(r.content)
+def download_file(url, output_path):
+    if not os.path.exists(output_path):
+        with st.spinner("Downloading model..."):
+            response = requests.get(url, stream=True)
+            response.raise_for_status()
+            with open(output_path, "wb") as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
 
-
+download_file(MODEL_URL, MODEL_PATH)
 model = joblib.load(MODEL_PATH)
+
 
 def predict(input_df):
     if hasattr(model, "predict_proba"):
