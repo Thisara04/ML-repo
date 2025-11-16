@@ -7,60 +7,175 @@ st.write("Enter patient details to estimate dementia risk.")
 
 # Dummy prediction function
 def dummy_predict(input_df):
-    return 0, [0.7, 0.3]  # Always predicts Non-Dementia, 70% / 30% probability
+    return 0, [0.7, 0.3]  # Always predicts Non-Dementia
 
-# User input
 def user_input_features():
-
-    # Example categorical fields with readable options
+    # --- Categorical features with mappings ---
     SEX = st.selectbox("Gender", ["Male", "Female", "Unknown"])
-    SEX_value = 0 if SEX=="Male" else 1 if SEX=="Female" else np.nan
+    SEX_val = 0 if SEX=="Male" else 1 if SEX=="Female" else np.nan
 
     HISPANIC = st.selectbox("Hispanic/Latino Ethnicity", ["No", "Yes", "Unknown"])
-    HISPANIC_value = 0 if HISPANIC=="No" else 1 if HISPANIC=="Yes" else np.nan
+    HISPANIC_val = 0 if HISPANIC=="No" else 1 if HISPANIC=="Yes" else np.nan
+
+    HISPOR = st.number_input("Hispanic Origin (HISPOR)", min_value=0, max_value=8, value=0)
+
+    RACE = st.selectbox("Race", ["White", "Black", "Asian", "Native", "Other", "Unknown"])
+    RACE_val = 0 if RACE=="White" else 1 if RACE=="Black" else 2 if RACE=="Asian" else 3 if RACE=="Native" else 4 if RACE=="Other" else np.nan
+
+    PRIMLANG = st.selectbox("Primary Language", ["English", "Spanish", "Other", "Unknown"])
+    PRIMLANG_val = 0 if PRIMLANG=="English" else 1 if PRIMLANG=="Spanish" else 2 if PRIMLANG=="Other" else np.nan
+
+    EDUC = st.number_input("Years of Education", min_value=0, max_value=30, value=16)
 
     MARISTAT = st.selectbox("Marital Status", ["Single", "Married", "Other", "Unknown"])
-    MARISTAT_value = 0 if MARISTAT=="Single" else 1 if MARISTAT=="Married" else 2 if MARISTAT=="Other" else np.nan
+    MARISTAT_val = 0 if MARISTAT=="Single" else 1 if MARISTAT=="Married" else 2 if MARISTAT=="Other" else np.nan
+
+    NACCLIVS = st.number_input("Living Situation", min_value=0, max_value=10, value=0)
 
     INDEPEND = st.selectbox("Independent?", ["No", "Yes", "Unknown"])
-    INDEPEND_value = 0 if INDEPEND=="No" else 1 if INDEPEND=="Yes" else np.nan
+    INDEPEND_val = 0 if INDEPEND=="No" else 1 if INDEPEND=="Yes" else np.nan
+
+    RESIDENC = st.number_input("Residence Type", min_value=0, max_value=5, value=1)
 
     HANDED = st.selectbox("Handedness", ["Right", "Left", "Unknown"])
-    HANDED_value = 1 if HANDED=="Right" else 2 if HANDED=="Left" else np.nan
+    HANDED_val = 1 if HANDED=="Right" else 2 if HANDED=="Left" else np.nan
 
-    ANYMEDS = st.selectbox("Taking any medications?", ["No", "Yes", "Unknown"])
-    ANYMEDS_value = 0 if ANYMEDS=="No" else 1 if ANYMEDS=="Yes" else np.nan
-
-    # Add more categorical fields similarly...
-
-    # Numeric inputs
     NACCAGE = st.number_input("Age", min_value=0, max_value=120, value=70)
     NACCAGEB = st.number_input("Age at Baseline", min_value=0, max_value=120, value=70)
+    INBIRYR = st.number_input("Birth Year", min_value=1900, max_value=2025, value=1950)
+    NEWINF = st.number_input("New Info", min_value=-4, max_value=9, value=-4)
+    INRELTO = st.number_input("Relationship", min_value=0, max_value=10, value=0)
+    INLIVWTH = st.number_input("Lives With", min_value=0, max_value=10, value=0)
+    INRELY = st.number_input("Dependent?", min_value=0, max_value=10, value=0)
+    NACCFAM = st.number_input("Family History", min_value=0, max_value=10, value=0)
+    NACCMOM = st.number_input("Mother Status", min_value=0, max_value=10, value=0)
+    NACCDAD = st.number_input("Father Status", min_value=0, max_value=10, value=0)
+
+    ANYMEDS = st.selectbox("Taking any medications?", ["No", "Yes", "Unknown"])
+    ANYMEDS_val = 0 if ANYMEDS=="No" else 1 if ANYMEDS=="Yes" else np.nan
+
+    NACCAMD = st.number_input("Number of Medications", min_value=0, max_value=50, value=0)
+
+    TOBAC100 = st.selectbox("Smoker 100+?", ["No", "Yes", "Unknown"])
+    TOBAC100_val = 0 if TOBAC100=="No" else 1 if TOBAC100=="Yes" else np.nan
+
+    SMOKYRS = st.number_input("Smoking Years", min_value=0, max_value=100, value=0)
+    PACKSPER = st.number_input("Packs per Day", min_value=0, max_value=10, value=0)
+
+    CVHATT = st.selectbox("Hypertension?", ["No", "Yes", "Unknown"])
+    CVHATT_val = 0 if CVHATT=="No" else 1 if CVHATT=="Yes" else np.nan
+
+    CVBYPASS = st.selectbox("Bypass Surgery?", ["No", "Yes", "Unknown"])
+    CVBYPASS_val = 0 if CVBYPASS=="No" else 1 if CVBYPASS=="Yes" else np.nan
+
+    CVPACE = st.selectbox("Pacemaker?", ["No", "Yes", "Unknown"])
+    CVPACE_val = 0 if CVPACE=="No" else 1 if CVPACE=="Yes" else np.nan
+
+    CVHVALVE = st.selectbox("Heart Valve Issue?", ["No", "Yes", "Unknown"])
+    CVHVALVE_val = 0 if CVHVALVE=="No" else 1 if CVHVALVE=="Yes" else np.nan
+
+    CBSTROKE = st.selectbox("Stroke History?", ["No", "Yes", "Unknown"])
+    CBSTROKE_val = 0 if CBSTROKE=="No" else 1 if CBSTROKE=="Yes" else np.nan
+
+    TBIBRIEF = st.selectbox("TBI Brief?", ["No", "Yes", "Unknown"])
+    TBIBRIEF_val = 0 if TBIBRIEF=="No" else 1 if TBIBRIEF=="Yes" else np.nan
+
+    TBIEXTEN = st.selectbox("TBI Extent?", ["No", "Yes", "Unknown"])
+    TBIEXTEN_val = 0 if TBIEXTEN=="No" else 1 if TBIEXTEN=="Yes" else np.nan
+
+    DEP2YRS = st.selectbox("Depression 2 Yrs?", ["No", "Yes", "Unknown"])
+    DEP2YRS_val = 0 if DEP2YRS=="No" else 1 if DEP2YRS=="Yes" else np.nan
+
+    DEPOTHR = st.selectbox("Other Depression?", ["No", "Yes", "Unknown"])
+    DEPOTHR_val = 0 if DEPOTHR=="No" else 1 if DEPOTHR=="Yes" else np.nan
+
+    NACCTBI = st.selectbox("TBI History?", ["No", "Yes", "Unknown"])
+    NACCTBI_val = 0 if NACCTBI=="No" else 1 if NACCTBI=="Yes" else np.nan
+
     HEIGHT = st.number_input("Height (m)", min_value=0.5, max_value=2.5, value=1.7, step=0.01)
     WEIGHT = st.number_input("Weight (kg)", min_value=20.0, max_value=200.0, value=70.0, step=0.1)
     NACCBMI = st.number_input("BMI", min_value=10.0, max_value=60.0, value=25.0, step=0.1)
 
-    # Combine all into a dict, using mapped values
+    VISION = st.selectbox("Vision Issue?", ["No", "Yes", "Unknown"])
+    VISION_val = 0 if VISION=="No" else 1 if VISION=="Yes" else np.nan
+
+    VISCORR = st.selectbox("Corrected Vision?", ["No", "Yes", "Unknown"])
+    VISCORR_val = 0 if VISCORR=="No" else 1 if VISCORR=="Yes" else np.nan
+
+    VISWCORR = st.selectbox("Worse Vision?", ["No", "Yes", "Unknown"])
+    VISWCORR_val = 0 if VISWCORR=="No" else 1 if VISWCORR=="Yes" else np.nan
+
+    HEARING = st.selectbox("Hearing Issue?", ["No", "Yes", "Unknown"])
+    HEARING_val = 0 if HEARING=="No" else 1 if HEARING=="Yes" else np.nan
+
+    HEARAID = st.selectbox("Hearing Aid?", ["No", "Yes", "Unknown"])
+    HEARAID_val = 0 if HEARAID=="No" else 1 if HEARAID=="Yes" else np.nan
+
+    HXSTROKE = st.selectbox("History Stroke?", ["No", "Yes", "Unknown"])
+    HXSTROKE_val = 0 if HXSTROKE=="No" else 1 if HXSTROKE=="Yes" else np.nan
+
+    HALL = st.selectbox("Hallucinations?", ["No", "Yes", "Unknown"])
+    HALL_val = 0 if HALL=="No" else 1 if HALL=="Yes" else np.nan
+
+    APP = st.selectbox("Apathy?", ["No", "Yes", "Unknown"])
+    APP_val = 0 if APP=="No" else 1 if APP=="Yes" else np.nan
+
+    BILLS = st.selectbox("Can manage Bills?", ["No", "Yes", "Unknown"])
+    BILLS_val = 0 if BILLS=="No" else 1 if BILLS=="Yes" else np.nan
+
+    TAXES = st.selectbox("Can manage Taxes?", ["No", "Yes", "Unknown"])
+    TAXES_val = 0 if TAXES=="No" else 1 if TAXES=="Yes" else np.nan
+
+    SHOPPING = st.selectbox("Can go Shopping?", ["No", "Yes", "Unknown"])
+    SHOPPING_val = 0 if SHOPPING=="No" else 1 if SHOPPING=="Yes" else np.nan
+
+    GAMES = st.selectbox("Can play Games?", ["No", "Yes", "Unknown"])
+    GAMES_val = 0 if GAMES=="No" else 1 if GAMES=="Yes" else np.nan
+
+    STOVE = st.selectbox("Can use Stove?", ["No", "Yes", "Unknown"])
+    STOVE_val = 0 if STOVE=="No" else 1 if STOVE=="Yes" else np.nan
+
+    MEALPREP = st.selectbox("Can prepare Meals?", ["No", "Yes", "Unknown"])
+    MEALPREP_val = 0 if MEALPREP=="No" else 1 if MEALPREP=="Yes" else np.nan
+
+    EVENTS = st.selectbox("Can attend Events?", ["No", "Yes", "Unknown"])
+    EVENTS_val = 0 if EVENTS=="No" else 1 if EVENTS=="Yes" else np.nan
+
+    PAYATTN = st.selectbox("Can pay Attention?", ["No", "Yes", "Unknown"])
+    PAYATTN_val = 0 if PAYATTN=="No" else 1 if PAYATTN=="Yes" else np.nan
+
+    REMDATES = st.selectbox("Can remember Dates?", ["No", "Yes", "Unknown"])
+    REMDATES_val = 0 if REMDATES=="No" else 1 if REMDATES=="Yes" else np.nan
+
+    TRAVEL = st.selectbox("Can Travel?", ["No", "Yes", "Unknown"])
+    TRAVEL_val = 0 if TRAVEL=="No" else 1 if TRAVEL=="Yes" else np.nan
+
+    # --- Combine all into a dict ---
     data = {
-        "SEX": SEX_value,
-        "HISPANIC": HISPANIC_value,
-        "MARISTAT": MARISTAT_value,
-        "INDEPEND": INDEPEND_value,
-        "HANDED": HANDED_value,
-        "ANYMEDS": ANYMEDS_value,
-        "NACCAGE": NACCAGE,
-        "NACCAGEB": NACCAGEB,
-        "HEIGHT": HEIGHT,
-        "WEIGHT": WEIGHT,
-        "NACCBMI": NACCBMI
-        # add remaining numeric fields and mapped categorical fields here
+        "SEX": SEX_val, "HISPANIC": HISPANIC_val, "HISPOR": HISPOR, "RACE": RACE_val,
+        "PRIMLANG": PRIMLANG_val, "EDUC": EDUC, "MARISTAT": MARISTAT_val, "NACCLIVS": NACCLIVS,
+        "INDEPEND": INDEPEND_val, "RESIDENC": RESIDENC, "HANDED": HANDED_val,
+        "NACCAGE": NACCAGE, "NACCAGEB": NACCAGEB, "INBIRYR": INBIRYR, "NEWINF": NEWINF,
+        "INRELTO": INRELTO, "INLIVWTH": INLIVWTH, "INRELY": INRELY, "NACCFAM": NACCFAM,
+        "NACCMOM": NACCMOM, "NACCDAD": NACCDAD, "ANYMEDS": ANYMEDS_val, "NACCAMD": NACCAMD,
+        "TOBAC100": TOBAC100_val, "SMOKYRS": SMOKYRS, "PACKSPER": PACKSPER,
+        "CVHATT": CVHATT_val, "CVBYPASS": CVBYPASS_val, "CVPACE": CVPACE_val, "CVHVALVE": CVHVALVE_val,
+        "CBSTROKE": CBSTROKE_val, "TBIBRIEF": TBIBRIEF_val, "TBIEXTEN": TBIEXTEN_val,
+        "DEP2YRS": DEP2YRS_val, "DEPOTHR": DEPOTHR_val, "NACCTBI": NACCTBI_val,
+        "HEIGHT": HEIGHT, "WEIGHT": WEIGHT, "NACCBMI": NACCBMI, "VISION": VISION_val,
+        "VISCORR": VISCORR_val, "VISWCORR": VISWCORR_val, "HEARING": HEARING_val,
+        "HEARAID": HEARAID_val, "HXSTROKE": HXSTROKE_val, "HALL": HALL_val, "APP": APP_val,
+        "BILLS": BILLS_val, "TAXES": TAXES_val, "SHOPPING": SHOPPING_val, "GAMES": GAMES_val,
+        "STOVE": STOVE_val, "MEALPREP": MEALPREP_val, "EVENTS": EVENTS_val, "PAYATTN": PAYATTN_val,
+        "REMDATES": REMDATES_val, "TRAVEL": TRAVEL_val
     }
 
     return pd.DataFrame([data])
 
+# --- Collect input ---
 input_df = user_input_features()
 
-# Predict button
+# --- Predict ---
 if st.button("Predict"):
     prediction, prediction_prob = dummy_predict(input_df)
     prediction_label = {0: "Non-Dementia", 1: "Risk of Dementia"}
