@@ -9,6 +9,9 @@ st.title("Dementia Risk Prediction")
 st.write("Enter patient details to estimate dementia risk.")
 st.write("Assist a co-participant to help the process!!.")
 
+import streamlit as st
+st.write("Hello, Streamlit is running!")
+
 # --- Model download and loading ---
 MODEL_URL = "https://huggingface.co/ThisaraAdhikari04/dementia-risk-model/resolve/main/Dementia_model.pkl"
 MODEL_PATH = "Dementia_model.pkl"
