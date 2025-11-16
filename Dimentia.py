@@ -47,7 +47,7 @@ def user_input_features():
     "Other": 7,
     "Unknown": np.nan}[PRIMLANG] #ok
 
-    educ_options = [str(i) for i in range(0, 31)] + ["Unknown"]
+    educ_options = [str(i) for i in range(0, 37)] + ["Unknown"]
     EDUC = st.selectbox("Years of Education", educ_options)
     EDUC_val = np.nan if EDUC == "Unknown" else int(EDUC) #ok
 
@@ -64,21 +64,46 @@ def user_input_features():
     6 if MARISTAT == "Domestic partner" else
     np.nan) #ok
 
-    NACCLIVS = st.number_input("Living Situation", min_value=0, max_value=10, value=0)
+    NACCLIVS = st.selectbox(
+    "Living situation",
+    ["Alone", "With spouce/partner", "With Relative/Friend", "With a Group", "Other","Unknown"])
+    NACCLIVS_val = (
+    1 if NACCLIVS == "Alone" else
+    2 if NACCLIVS == "With spouce/partner" else
+    3 if NACCLIVS == "With Relative/Friend" else
+    4 if NACCLIVS == "With a Group" else
+    5 if NACCLIVS == "Other" else
+    np.nan) #ok
 
-    INDEPEND = st.selectbox("Independent?", ["No", "Yes", "Unknown"])
-    INDEPEND_val = 0 if INDEPEND=="No" else 1 if INDEPEND=="Yes" else np.nan
+    INDEPEND = st.selectbox(
+    "Level of Independance",
+    ["able to live independantly", "Require assistance with complex activities", "Require assistance with basic activities", "Completely dependent","Unknown"])
+    INDEPEND_val = (
+    1 if INDEPEND == "able to live independantly" else
+    2 if INDEPEND == "Require assistance with complex activities" else
+    3 if INDEPEND == "Require assistance with basic activities" else
+    4 if INDEPEND == "Completely dependent" else
+    np.nan) #ok
 
     RESIDENC = st.number_input("Residence Type", min_value=0, max_value=5, value=1)
 
-    HANDED = st.selectbox("Handedness", ["Right", "Left", "Unknown"])
-    HANDED_val = 1 if HANDED=="Right" else 2 if HANDED=="Left" else np.nan
+    HANDED = st.selectbox("Handedness", ["Left", "Right","Ambidextrous", "Unknown"])
+    HANDED_val = 1 if HANDED=="Left" else 2 if HANDED=="Right" else 3 if HANDED=="Ambidextrous" else np.nan  #ok
 
     NACCAGE = st.number_input("Person's Age", min_value=18, max_value=120, value=70)
-    NACCAGEB = st.number_input("Age at Baseline", min_value=0, max_value=120, value=70)
+    NACCAGEB = st.number_input("Confirm Person's age", min_value=18, max_value=120, value=70)
     
-    INBIRYR = st.number_input("Co-participant Birth Year", min_value=1875, max_value=2025, value=1950) #ok
-    NEWINF = st.number_input("New Info", min_value=-4, max_value=9, value=-4)
+    unknown_birth = st.checkbox("Birth Year Unknown")
+    if unknown_birth:
+        INBIRYR = np.nan
+    else:
+        INBIRYR = st.number_input(
+        "Co-participant Birth Year",
+        min_value=1875,
+        max_value=2025,
+        value=1950)  #ok
+        
+    NEWINF = st.number_input("Co-participant Familiar with data collecting process", min_value=-4, max_value=9, value=-4)
     INRELTO = st.number_input("Relationship", min_value=0, max_value=10, value=0)
     INLIVWTH = st.number_input("Lives With", min_value=0, max_value=10, value=0)
     INRELY = st.number_input("Dependent?", min_value=0, max_value=10, value=0)
