@@ -1,10 +1,10 @@
 streamlit
-joblib
-scikit-learn
-xgboost
-catboost
 pandas
 numpy
-imbalanced-learn
+scikit-learn
+matplotlib
 seaborn
-base64
+xgboost
+catboost
+joblib
+gdown
