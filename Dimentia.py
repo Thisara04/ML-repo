@@ -4,7 +4,7 @@ import numpy as np
 import joblib
 import requests
 import os 
-'''
+
 st.title("Dementia Risk Prediction")
 st.write("Enter patient details to estimate dementia risk.")
 st.write("Assist a co-participant to help the process!!.")
@@ -37,7 +37,7 @@ def predict(input_df):
         pred_class = int(model.predict(input_df)[0])
         prob = [1 - pred_class, pred_class]
     return pred_class, prob
-'''
+
 
 def user_input_features():
     SEX = st.selectbox("Gender", ["Male", "Female"])
