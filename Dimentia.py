@@ -47,7 +47,7 @@ def user_input_features():
     "Other": 7,
     "Unknown": np.nan}[PRIMLANG] #ok
 
-    educ_options = [str(i) for i in range(0, 37)] + ["Unknown"]
+    educ_options = ["Unknown"]+[str(i) for i in range(0, 37)] 
     EDUC = st.selectbox("Years of Education", educ_options)
     EDUC_val = np.nan if EDUC == "Unknown" else int(EDUC) #ok
 
@@ -93,7 +93,7 @@ def user_input_features():
     NACCAGE = st.number_input("Person's Age", min_value=18, max_value=120, value=70)
     NACCAGEB = st.number_input("Confirm Person's age", min_value=18, max_value=120, value=70)
     
-    birth_options = [str(i) for i in range(1875, 2026)] + ["Unknown"]
+    birth_options = ["Unknown"]+[str(i) for i in range(1875, 2026)]
     INBIRYR = st.selectbox("Co-participant Birth Year", birth_options)
     INBIRYR_val = np.nan if INBIRYR == "Unknown" else int(INBIRYR) #ok
 
@@ -175,35 +175,156 @@ def user_input_features():
     APP = st.selectbox("Apathy?", ["No", "Yes", "Unknown"])
     APP_val = 0 if APP=="No" else 1 if APP=="Yes" else np.nan
 
-    BILLS = st.selectbox("Can manage Bills?", ["No", "Yes", "Unknown"])
-    BILLS_val = 0 if BILLS=="No" else 1 if BILLS=="Yes" else np.nan
+    BILLS = st.selectbox(
+    "Can pay bills/checks recently?",
+    ["Normal", 
+     "Has difficulty but does by self", 
+     "Requires assistance",
+     "Dependent",
+     "Never did",
+     "Unknown"])
+    BILLS_val = (
+    0 if BILLS == "Normal" else
+    1 if BILLS == "Has difficulty but does by self" else
+    2 if BILLS == "Requires assistance" else
+    3 if BILLS == "Dependent" else
+    np.nan) #ok
 
-    TAXES = st.selectbox("Can manage Taxes?", ["No", "Yes", "Unknown"])
-    TAXES_val = 0 if TAXES=="No" else 1 if TAXES=="Yes" else np.nan
+    TAXES = st.selectbox(
+    "Can record accounts and money recently?",
+    ["Normal", 
+     "Has difficulty but does by self", 
+     "Requires assistance",
+     "Dependent",
+     "Never did",
+     "Unknown"])
+    TAXES_val = (
+    0 if TAXES == "Normal" else
+    1 if TAXES == "Has difficulty but does by self" else
+    2 if TAXES == "Requires assistance" else
+    3 if TAXES == "Dependent" else
+    np.nan) #ok
 
-    SHOPPING = st.selectbox("Can go Shopping?", ["No", "Yes", "Unknown"])
-    SHOPPING_val = 0 if SHOPPING=="No" else 1 if SHOPPING=="Yes" else np.nan
+    SHOPPING = st.selectbox(
+    "Can shop by self recently?",
+    ["Normal", 
+     "Has difficulty but does by self", 
+     "Requires assistance",
+     "Dependent",
+     "Never did",
+     "Unknown"])
+    SHOPPING_val = (
+    0 if SHOPPING == "Normal" else
+    1 if SHOPPING == "Has difficulty but does by self" else
+    2 if SHOPPING == "Requires assistance" else
+    3 if SHOPPING == "Dependent" else
+    np.nan) #ok
+    
+    GAMES = st.selectbox(
+    "Can play games(chess/bridge) recently?",
+    ["Normal", 
+     "Has difficulty but does by self", 
+     "Requires assistance",
+     "Dependent",
+     "Never did",
+     "Unknown"])
+    GAMES_val = (
+    0 if GAMES == "Normal" else
+    1 if GAMES == "Has difficulty but does by self" else
+    2 if GAMES == "Requires assistance" else
+    3 if GAMES == "Dependent" else
+    np.nan) #ok
 
-    GAMES = st.selectbox("Can play Games?", ["No", "Yes", "Unknown"])
-    GAMES_val = 0 if GAMES=="No" else 1 if GAMES=="Yes" else np.nan
+    STOVE = st.selectbox(
+    "Can make tea/off the stove by self recently?",
+    ["Normal", 
+     "Has difficulty but does by self", 
+     "Requires assistance",
+     "Dependent",
+     "Never did",
+     "Unknown"])
+    STOVE_val = (
+    0 if STOVE == "Normal" else
+    1 if STOVE == "Has difficulty but does by self" else
+    2 if STOVE == "Requires assistance" else
+    3 if STOVE == "Dependent" else
+    np.nan) #ok
 
-    STOVE = st.selectbox("Can use Stove?", ["No", "Yes", "Unknown"])
-    STOVE_val = 0 if STOVE=="No" else 1 if STOVE=="Yes" else np.nan
+    MEALPREP = st.selectbox(
+    "Can prepare a meal recently?",
+    ["Normal", 
+     "Has difficulty but does by self", 
+     "Requires assistance",
+     "Dependent",
+     "Never did",
+     "Unknown"])
+    MEALPREP_val = (
+    0 if MEALPREP == "Normal" else
+    1 if MEALPREP == "Has difficulty but does by self" else
+    2 if MEALPREP == "Requires assistance" else
+    3 if MEALPREP == "Dependent" else
+    np.nan) #ok
 
-    MEALPREP = st.selectbox("Can prepare Meals?", ["No", "Yes", "Unknown"])
-    MEALPREP_val = 0 if MEALPREP=="No" else 1 if MEALPREP=="Yes" else np.nan
+    EVENTS = st.selectbox(
+    "Can keep track of events recently?",
+    ["Normal", 
+     "Has difficulty but does by self", 
+     "Requires assistance",
+     "Dependent",
+     "Never did",
+     "Unknown"])
+    EVENTS_val = (
+    0 if EVENTS == "Normal" else
+    1 if EVENTS == "Has difficulty but does by self" else
+    2 if EVENTS == "Requires assistance" else
+    3 if EVENTS == "Dependent" else
+    np.nan) #ok
 
-    EVENTS = st.selectbox("Can attend Events?", ["No", "Yes", "Unknown"])
-    EVENTS_val = 0 if EVENTS=="No" else 1 if EVENTS=="Yes" else np.nan
+    PAYATTN = st.selectbox(
+    "Can pay attention recently?",
+    ["Normal", 
+     "Has difficulty but does by self", 
+     "Requires assistance",
+     "Dependent",
+     "Never did",
+     "Unknown"])
+    PAYATTN_val = (
+    0 if PAYATTN == "Normal" else
+    1 if PAYATTN == "Has difficulty but does by self" else
+    2 if PAYATTN == "Requires assistance" else
+    3 if PAYATTN == "Dependent" else
+    np.nan) #ok
 
-    PAYATTN = st.selectbox("Can pay Attention?", ["No", "Yes", "Unknown"])
-    PAYATTN_val = 0 if PAYATTN=="No" else 1 if PAYATTN=="Yes" else np.nan
+    REMDATES = st.selectbox(
+    "Can Remember dates and occasions recently?",
+    ["Normal", 
+     "Has difficulty but does by self", 
+     "Requires assistance",
+     "Dependent",
+     "Never did",
+     "Unknown"])
+    REMDATES_val = (
+    0 if REMDATES == "Normal" else
+    1 if REMDATES == "Has difficulty but does by self" else
+    2 if REMDATES == "Requires assistance" else
+    3 if REMDATES == "Dependent" else
+    np.nan)
 
-    REMDATES = st.selectbox("Can remember Dates?", ["No", "Yes", "Unknown"])
-    REMDATES_val = 0 if REMDATES=="No" else 1 if REMDATES=="Yes" else np.nan
+    TRAVEL = st.selectbox(
+    "Can Travel recently?",
+    ["Normal", 
+     "Has difficulty but does by self", 
+     "Requires assistance",
+     "Dependent",
+     "Never did",
+     "Unknown"])
+    TRAVEL_val = (
+    0 if TRAVEL == "Normal" else
+    1 if TRAVEL == "Has difficulty but does by self" else
+    2 if TRAVEL == "Requires assistance" else
+    3 if TRAVEL == "Dependent" else
+    np.nan) #ok
 
-    TRAVEL = st.selectbox("Can Travel?", ["No", "Yes", "Unknown"])
-    TRAVEL_val = 0 if TRAVEL=="No" else 1 if TRAVEL=="Yes" else np.nan
 
     # --- Combine all into a dict ---
     data = {
