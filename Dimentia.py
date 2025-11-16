@@ -7,6 +7,7 @@ import os
 
 st.title("Dementia Risk Prediction")
 st.write("Enter patient details to estimate dementia risk.")
+st.write("Assist a co-participant to help the process!!.")
 
 MODEL_URL = "https://drive.google.com/uc?export=download&id=153VzcC2Ni-T2Pew5ne6e1zNBThNadJHV"
 MODEL_PATH = "Dementia_model.pkl"
