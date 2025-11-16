@@ -99,20 +99,23 @@ def user_input_features():
     4 if RESIDENC == "Nursing facility" else
     np.nan)  #ok
 
-
-
     HANDED = st.selectbox("Handedness", ["Left", "Right","Ambidextrous", "Unknown"])
     HANDED_val = 1 if HANDED=="Left" else 2 if HANDED=="Right" else 3 if HANDED=="Ambidextrous" else np.nan  #ok
 
-    NACCAGE = st.number_input("Person's Age", min_value=18, max_value=120, value=70)
-    NACCAGEB = st.number_input("Confirm Person's age", min_value=18, max_value=120, value=70)
+    NACCAGE = st.number_input("Person's Age", min_value=18, max_value=120, value=70)#ok
+    NACCAGEB = st.number_input("Confirm Person's age", min_value=18, max_value=120, value=70)#ok
     
     birth_options = ["Unknown"]+[str(i) for i in range(1875, 2026)]
     INBIRYR = st.selectbox("Co-participant Birth Year", birth_options)
     INBIRYR_val = np.nan if INBIRYR == "Unknown" else int(INBIRYR) #ok
 
-    NEWINF = st.selectbox("Handedness", ["No", "Yes","Unknown"])
+    NEWINF = st.selectbox("Familiar with data entering process?", ["No", "Yes","Unknown"])
     NEWINF_val = 0 if NEWINF=="No" else 1 if NEWINF=="Yes" else np.nan  #ok
+
+    ineduc_options = ["Unknown"] + [str(i) for i in range(0, 37)]
+    INEDUC = st.selectbox("Co-participant Years of Education", ineduc_options)
+    INEDUC_val = np.nan if INEDUC == "Unknown" else int(INEDUC) #ok
+
     
     INRELTO = st.number_input("Relationship", min_value=0, max_value=10, value=0)
     INLIVWTH = st.number_input("Lives With", min_value=0, max_value=10, value=0)
@@ -126,69 +129,154 @@ def user_input_features():
 
     NACCAMD = st.number_input("Number of Medications", min_value=0, max_value=50, value=0)
 
-    TOBAC100 = st.selectbox("Smoker 100+?", ["No", "Yes", "Unknown"])
+    TOBAC100 = st.selectbox("Smoked 100+ cigarettes in lifetime?", ["No", "Yes", "Unknown"])
     TOBAC100_val = 0 if TOBAC100=="No" else 1 if TOBAC100=="Yes" else np.nan
 
-    SMOKYRS = st.number_input("Smoking Years", min_value=0, max_value=100, value=0)
-    PACKSPER = st.number_input("Packs per Day", min_value=0, max_value=10, value=0)
+    SMOKYRS_options = ["Unknown"] + [str(i) for i in range(0, 88)]
+    SMOKYRS = st.selectbox("Total years smoked cigarettes", SMOKYRS_options)
+    SMOKYRS_val = np.nan if SMOKYRS == "Unknown" else int(SMOKYRS) #ok
+    
+    pack_options = [
+    "No reported cigarette use",
+    "1 cigarette to less than 1/2 pack",
+    "½ pack to less than 1 pack",
+    "1 pack to 1½ packs",
+    "1½ packs to 2 packs",
+    "More than two packs",
+    "Not applicable",
+    "Unknown",
+    "Not available"]
+    PACKSPER = st.selectbox("Cigarettes per day", pack_options)
+    PACKSPER_val = (
+    0 if PACKSPER == "No reported cigarette use" else
+    1 if PACKSPER == "1 cigarette to less than 1/2 pack" else
+    2 if PACKSPER == "½ pack to less than 1 pack" else
+    3 if PACKSPER == "1 pack to 1½ packs" else
+    4 if PACKSPER == "1½ packs to 2 packs" else
+    5 if PACKSPER == "More than two packs" else
+    np.nan) #ok
 
-    CVHATT = st.selectbox("Hypertension?", ["No", "Yes", "Unknown"])
-    CVHATT_val = 0 if CVHATT=="No" else 1 if CVHATT=="Yes" else np.nan
+    CVHATT = st.selectbox(
+    "Any Heart attack/cardiac arrest? ",
+    ["No", "Recent","Remote", "Unknown"])
+    CVHATT_val = (
+    0 if CVHATT == "No" else
+    1 if CVHATT == "Recent" else
+    2 if CVHATT == "Remote" else
+    np.nan) #ok
 
-    CVBYPASS = st.selectbox("Bypass Surgery?", ["No", "Yes", "Unknown"])
-    CVBYPASS_val = 0 if CVBYPASS=="No" else 1 if CVBYPASS=="Yes" else np.nan
+    CVBYPASS = st.selectbox(
+    "Had a Cardiac bypass procedure? ",
+    ["No", "Recent","Remote", "Unknown"])
+    CVBYPASS_val = (
+    0 if CVBYPASS == "No" else
+    1 if CVBYPASS == "Recent" else
+    2 if CVBYPASS == "Remote" else
+    np.nan) #ok
 
-    CVPACE = st.selectbox("Pacemaker?", ["No", "Yes", "Unknown"])
-    CVPACE_val = 0 if CVPACE=="No" else 1 if CVPACE=="Yes" else np.nan
+    CVPACE = st.selectbox(
+    "Use a pacemaker? ",
+    ["No", "Recent","Remote", "Unknown"])
+    CVPACE_val = (
+    0 if CVPACE == "No" else
+    1 if CVPACE == "Recent" else
+    2 if CVPACE == "Remote" else
+    np.nan) #ok
 
-    CVHVALVE = st.selectbox("Heart Valve Issue?", ["No", "Yes", "Unknown"])
-    CVHVALVE_val = 0 if CVHVALVE=="No" else 1 if CVHVALVE=="Yes" else np.nan
+    CVHVALVE = st.selectbox(
+    "Heart valve replacement or repair? ",
+    ["No", "Recent","Remote", "Unknown"])
+    CVHVALVE_val = (
+    0 if CVHVALVE == "No" else
+    1 if CVHVALVE == "Recent" else
+    2 if CVHVALVE == "Remote" else
+    np.nan) #ok
 
-    CBSTROKE = st.selectbox("Stroke History?", ["No", "Yes", "Unknown"])
-    CBSTROKE_val = 0 if CBSTROKE=="No" else 1 if CBSTROKE=="Yes" else np.nan
+    CBSTROKE = st.selectbox(
+    "Any Stroke? ",
+    ["No", "Recent","Remote", "Unknown"])
+    CBSTROKE_val = (
+    0 if CBSTROKE == "No" else
+    1 if CBSTROKE == "Recent" else
+    2 if CBSTROKE == "Remote" else
+    np.nan) #ok
 
-    TBIBRIEF = st.selectbox("TBI Brief?", ["No", "Yes", "Unknown"])
-    TBIBRIEF_val = 0 if TBIBRIEF=="No" else 1 if TBIBRIEF=="Yes" else np.nan
+    TBIBRIEF = st.selectbox(
+    "Traumatic brain injury (TbI) with brief loss of consciousness? ",
+    ["No", "Single","Multiple", "Unknown"])
+    TBIBRIEF_val = (
+    0 if TBIBRIEF == "No" else
+    1 if TBIBRIEF == "Single" else
+    2 if TBIBRIEF == "Multiple" else
+    np.nan) #ok
 
-    TBIEXTEN = st.selectbox("TBI Extent?", ["No", "Yes", "Unknown"])
-    TBIEXTEN_val = 0 if TBIEXTEN=="No" else 1 if TBIEXTEN=="Yes" else np.nan
+    TBIEXTEN = st.selectbox(
+    "TbI with extended loss of consciousness(5 minutes or longer)? ",
+    ["No", "Single","Multiple", "Unknown"])
+    TBIEXTEN_val = (
+    0 if TBIEXTEN == "No" else
+    1 if TBIEXTEN == "Single" else
+    2 if TBIEXTEN == "Multiple" else
+    np.nan) #ok
 
-    DEP2YRS = st.selectbox("Depression 2 Yrs?", ["No", "Yes", "Unknown"])
-    DEP2YRS_val = 0 if DEP2YRS=="No" else 1 if DEP2YRS=="Yes" else np.nan
+    DEP2YRS = st.selectbox(
+    "Active depression in the last two years?",
+    ["No", "Yes", "Unknown"])
+    DEP2YRS_val = (
+    0 if DEP2YRS == "No" else
+    1 if DEP2YRS == "Yes" else
+    np.nan) #ok
+    
+    DEPOTHR = st.selectbox(
+    "Depression episodes more than two years ago?",
+    ["No", "Yes", "Unknown"])
+    DEPOTHR_val = (
+    0 if DEPOTHR == "No" else
+    1 if DEPOTHR == "Yes" else
+    np.nan) #ok
 
-    DEPOTHR = st.selectbox("Other Depression?", ["No", "Yes", "Unknown"])
-    DEPOTHR_val = 0 if DEPOTHR=="No" else 1 if DEPOTHR=="Yes" else np.nan
+    NACCTBI = st.selectbox(
+    "History of Traumatic Brain Injury (TBI)",
+    ["No", "Yes", "Unknown"])
+    NACCTBI_val = (
+    0 if NACCTBI == "No" else
+    1 if NACCTBI == "Yes" else
+    np.nan) #ok
 
-    NACCTBI = st.selectbox("TBI History?", ["No", "Yes", "Unknown"])
-    NACCTBI_val = 0 if NACCTBI=="No" else 1 if NACCTBI=="Yes" else np.nan
+    HEIGHT_input = st.number_input("Height (m)", min_value=0.5, max_value=2.5, value=1.7, step=0.01)
+    HEIGHT = HEIGHT_input * 39.3701 #ok
+    
+    WEIGHT_input = st.number_input("Weight (kg)", min_value=20.0, max_value=200.0, value=70.0, step=0.1)
+    WEIGHT = WEIGHT_input * 2.20462 #ok
+    
+    NACCBMI = (WEIGHT * 703) / (HEIGHT ** 2) #ok
 
-    HEIGHT = st.number_input("Height (m)", min_value=0.5, max_value=2.5, value=1.7, step=0.01)
-    WEIGHT = st.number_input("Weight (kg)", min_value=20.0, max_value=200.0, value=70.0, step=0.1)
-    NACCBMI = st.number_input("BMI", min_value=10.0, max_value=60.0, value=25.0, step=0.1)
+    VISION = st.selectbox("Without corrective lenses, is vision functionally normal?", ["No", "Yes", "Unknown"])
+    VISION_val = 0 if VISION=="No" else 1 if VISION=="Yes" else np.nan #ok
 
-    VISION = st.selectbox("Vision Issue?", ["No", "Yes", "Unknown"])
-    VISION_val = 0 if VISION=="No" else 1 if VISION=="Yes" else np.nan
+    VISCORR = st.selectbox("usually wear corrective lenses?", ["No", "Yes", "Unknown"])
+    VISCORR_val = 0 if VISCORR=="No" else 1 if VISCORR=="Yes" else np.nan #ok
 
-    VISCORR = st.selectbox("Corrected Vision?", ["No", "Yes", "Unknown"])
-    VISCORR_val = 0 if VISCORR=="No" else 1 if VISCORR=="Yes" else np.nan
+    VISWCORR = st.selectbox(" vision functionally normal with corrective lenses?", ["No", "Yes", "Unknown/Not wear lenses"])
+    VISWCORR_val = 0 if VISWCORR=="No" else 1 if VISWCORR=="Yes" else np.nan #ok
 
-    VISWCORR = st.selectbox("Worse Vision?", ["No", "Yes", "Unknown"])
-    VISWCORR_val = 0 if VISWCORR=="No" else 1 if VISWCORR=="Yes" else np.nan
+    HEARING = st.selectbox("Hearing functionally normal without a hearing aid(s)?", ["No", "Yes", "Unknown"])
+    HEARING_val = 0 if HEARING=="No" else 1 if HEARING=="Yes" else np.nan #ok
 
-    HEARING = st.selectbox("Hearing Issue?", ["No", "Yes", "Unknown"])
-    HEARING_val = 0 if HEARING=="No" else 1 if HEARING=="Yes" else np.nan
+    HEARAID = st.selectbox("usually wear a hearing aid(s)?", ["No", "Yes", "Unknown"])
+    HEARAID_val = 0 if HEARAID=="No" else 1 if HEARAID=="Yes" else np.nan #ok
 
-    HEARAID = st.selectbox("Hearing Aid?", ["No", "Yes", "Unknown"])
-    HEARAID_val = 0 if HEARAID=="No" else 1 if HEARAID=="Yes" else np.nan
+    HEARWAID = st.selectbox("hearing functionally normal with a hearing aid(s)?", ["No", "Yes", "Unknown?Do not wear any"])
+    HEARWAID_val = 0 if HEARWAID=="No" else 1 if HEARWAID=="Yes" else np.nan #ok
 
-    HXSTROKE = st.selectbox("History Stroke?", ["No", "Yes", "Unknown"])
-    HXSTROKE_val = 0 if HXSTROKE=="No" else 1 if HXSTROKE=="Yes" else np.nan
+    HXSTROKE = st.selectbox("Any history of stroke?", ["No", "Yes", "Unknown"])
+    HXSTROKE_val = 0 if HXSTROKE=="No" else 2 if HXSTROKE=="Yes" else np.nan #ok
 
-    HALL = st.selectbox("Hallucinations?", ["No", "Yes", "Unknown"])
-    HALL_val = 0 if HALL=="No" else 1 if HALL=="Yes" else np.nan
+    HALL = st.selectbox(" Hallucinations in the last month?", ["No", "Yes", "Unknown"])
+    HALL_val = 0 if HALL=="No" else 1 if HALL=="Yes" else np.nan #ok
 
-    APP = st.selectbox("Apathy?", ["No", "Yes", "Unknown"])
-    APP_val = 0 if APP=="No" else 1 if APP=="Yes" else np.nan
+    APP = st.selectbox("Appetite and eating problems in the last month", ["No", "Yes", "Unknown"])
+    APP_val = 0 if APP=="No" else 1 if APP=="Yes" else np.nan #ok
 
     BILLS = st.selectbox(
     "Can pay bills/checks recently?",
@@ -323,7 +411,7 @@ def user_input_features():
     1 if REMDATES == "Has difficulty but does by self" else
     2 if REMDATES == "Requires assistance" else
     3 if REMDATES == "Dependent" else
-    np.nan)
+    np.nan) #ok
 
     TRAVEL = st.selectbox(
     "Can Travel recently?",
