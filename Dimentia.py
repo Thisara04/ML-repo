@@ -116,14 +116,31 @@ def user_input_features():
     INEDUC = st.selectbox("Co-participant Years of Education", ineduc_options)
     INEDUC_val = np.nan if INEDUC == "Unknown" else int(INEDUC) #ok
 
-    
-    INRELTO = st.number_input("Relationship", min_value=0, max_value=10, value=0)
+    INRELTO_options = [
+    "Spouse / Partner / Companion",
+    "Child",
+    "Sibling",
+    "Other Relative",
+    "Friend / Neighbor / Known",
+    "Paid Caregiver / Clinician",
+    "Other",
+    "Unknown"]
+    INRELTO = st.selectbox("Co-participant's Relationship to Subject", INRELTO_options)
+    INRELTO_val = (
+    1 if INRELTO == "Spouse / Partner / Companion" else
+    2 if INRELTO == "Child" else
+    3 if INRELTO == "Sibling" else
+    4 if INRELTO == "Other Relative" else
+    5 if INRELTO == "Friend / Neighbor / Known" else
+    6 if INRELTO == "Paid Caregiver / Clinician" else
+    7 if INRELTO == "Other" else
+    np.nan )
     
     INLIVWTH_options = [
     "No",
     "Yes",
     "Unknown"]
-    INLIVWTH = st.selectbox("Does the co-participant live with person?", INRELY_options)
+    INLIVWTH = st.selectbox("Does the co-participant live with person?", INLIVWTH_options)
     INLIVWTH_val = (
     0 if INLIVWTH == "No" else
     1 if INLIVWTH == "Yes" else
@@ -478,23 +495,23 @@ def user_input_features():
 
     # --- Combine all into a dict ---
     data = {
-        "SEX": SEX_val, "HISPANIC": HISPANIC_val, "HISPOR": HISPOR_val, "RACE": RACE_val,
-        "PRIMLANG": PRIMLANG_val, "EDUC": EDUC, "MARISTAT": MARISTAT_val, "NACCLIVS": NACCLIVS,
-        "INDEPEND": INDEPEND_val, "RESIDENC": RESIDENC, "HANDED": HANDED_val,
-        "NACCAGE": NACCAGE, "NACCAGEB": NACCAGEB, "INBIRYR": INBIRYR, "NEWINF": NEWINF,
-        "INRELTO": INRELTO, "INLIVWTH": INLIVWTH, "INRELY": INRELY, "NACCFAM": NACCFAM,
-        "NACCMOM": NACCMOM, "NACCDAD": NACCDAD, "ANYMEDS": ANYMEDS_val, "NACCAMD": NACCAMD,
-        "TOBAC100": TOBAC100_val, "SMOKYRS": SMOKYRS, "PACKSPER": PACKSPER,
-        "CVHATT": CVHATT_val, "CVBYPASS": CVBYPASS_val, "CVPACE": CVPACE_val, "CVHVALVE": CVHVALVE_val,
-        "CBSTROKE": CBSTROKE_val, "TBIBRIEF": TBIBRIEF_val, "TBIEXTEN": TBIEXTEN_val,
-        "DEP2YRS": DEP2YRS_val, "DEPOTHR": DEPOTHR_val, "NACCTBI": NACCTBI_val,
-        "HEIGHT": HEIGHT, "WEIGHT": WEIGHT, "NACCBMI": NACCBMI, "VISION": VISION_val,
-        "VISCORR": VISCORR_val, "VISWCORR": VISWCORR_val, "HEARING": HEARING_val,
-        "HEARAID": HEARAID_val, "HXSTROKE": HXSTROKE_val, "HALL": HALL_val, "APP": APP_val,
-        "BILLS": BILLS_val, "TAXES": TAXES_val, "SHOPPING": SHOPPING_val, "GAMES": GAMES_val,
-        "STOVE": STOVE_val, "MEALPREP": MEALPREP_val, "EVENTS": EVENTS_val, "PAYATTN": PAYATTN_val,
-        "REMDATES": REMDATES_val, "TRAVEL": TRAVEL_val
-    }
+    "SEX": SEX_val, "HISPANIC": HISPANIC_val, "HISPOR": HISPOR_val, "RACE": RACE_val,
+    "PRIMLANG": PRIMLANG_val, "EDUC": EDUC_val, "MARISTAT": MARISTAT_val, "NACCLIVS": NACCLIVS_val,
+    "INDEPEND": INDEPEND_val, "RESIDENC": RESIDENC_val, "HANDED": HANDED_val,
+    "NACCAGE": NACCAGE, "NACCAGEB": NACCAGEB, "INBIRYR": INBIRYR_val, "NEWINF": NEWINF_val,
+    "INRELTO": INRELTO_val, "INLIVWTH": INLIVWTH_val, "INRELY": INRELY_val, "NACCFAM": NACCFAM_val,
+    "NACCMOM": NACCMOM_val, "NACCDAD": NACCDAD_val, "ANYMEDS": ANYMEDS_val, "NACCAMD": NACCAMD_val,
+    "TOBAC100": TOBAC100_val, "SMOKYRS": SMOKYRS_val, "PACKSPER": PACKSPER_val,
+    "CVHATT": CVHATT_val, "CVBYPASS": CVBYPASS_val, "CVPACE": CVPACE_val, "CVHVALVE": CVHVALVE_val,
+    "CBSTROKE": CBSTROKE_val, "TBIBRIEF": TBIBRIEF_val, "TBIEXTEN": TBIEXTEN_val,
+    "DEP2YRS": DEP2YRS_val, "DEPOTHR": DEPOTHR_val, "NACCTBI": NACCTBI_val,
+    "HEIGHT": HEIGHT, "WEIGHT": WEIGHT, "NACCBMI": NACCBMI, "VISION": VISION_val,
+    "VISCORR": VISCORR_val, "VISWCORR": VISWCORR_val, "HEARING": HEARING_val,
+    "HEARAID": HEARAID_val, "HEARWAID": HEARWAID_val, "HXSTROKE": HXSTROKE_val,
+    "HALL": HALL_val, "APP": APP_val,
+    "BILLS": BILLS_val, "TAXES": TAXES_val, "SHOPPING": SHOPPING_val, "GAMES": GAMES_val,
+    "STOVE": STOVE_val, "MEALPREP": MEALPREP_val, "EVENTS": EVENTS_val, "PAYATTN": PAYATTN_val,
+    "REMDATES": REMDATES_val, "TRAVEL": TRAVEL_val}
 
     return pd.DataFrame([data])
 
