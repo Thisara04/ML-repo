@@ -93,15 +93,10 @@ def user_input_features():
     NACCAGE = st.number_input("Person's Age", min_value=18, max_value=120, value=70)
     NACCAGEB = st.number_input("Confirm Person's age", min_value=18, max_value=120, value=70)
     
-    unknown_birth = st.checkbox("Birth Year Unknown")
-    if unknown_birth:
-        INBIRYR = np.nan
-    else:
-        INBIRYR = st.number_input(
-        "Co-participant Birth Year",
-        min_value=1875,
-        max_value=2025,
-        value=1950)  #ok
+    birth_options = [str(i) for i in range(1875, 2026)] + ["Unknown"]
+    INBIRYR = st.selectbox("Co-participant Birth Year", birth_options)
+    INBIRYR_val = np.nan if INBIRYR == "Unknown" else int(INBIRYR) #ok
+
         
     NEWINF = st.number_input("Co-participant Familiar with data collecting process", min_value=-4, max_value=9, value=-4)
     INRELTO = st.number_input("Relationship", min_value=0, max_value=10, value=0)
