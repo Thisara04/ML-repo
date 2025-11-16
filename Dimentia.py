@@ -85,7 +85,21 @@ def user_input_features():
     4 if INDEPEND == "Completely dependent" else
     np.nan) #ok
 
-    RESIDENC = st.number_input("Residence Type", min_value=0, max_value=5, value=1)
+    RESIDENC = st.selectbox(
+    "Residence Type",
+    [    "Private residence",
+        "Retirement community",
+        "Assisted living",
+        "Nursing facility",
+        "Unknown"])
+    RESIDENC_val = (
+    1 if RESIDENC == "Private residence" else
+    2 if RESIDENC == "Retirement community" else
+    3 if RESIDENC == "Assisted living" else
+    4 if RESIDENC == "Nursing facility" else
+    np.nan)  #ok
+
+
 
     HANDED = st.selectbox("Handedness", ["Left", "Right","Ambidextrous", "Unknown"])
     HANDED_val = 1 if HANDED=="Left" else 2 if HANDED=="Right" else 3 if HANDED=="Ambidextrous" else np.nan  #ok
@@ -97,8 +111,9 @@ def user_input_features():
     INBIRYR = st.selectbox("Co-participant Birth Year", birth_options)
     INBIRYR_val = np.nan if INBIRYR == "Unknown" else int(INBIRYR) #ok
 
-        
-    NEWINF = st.number_input("Co-participant Familiar with data collecting process", min_value=-4, max_value=9, value=-4)
+    NEWINF = st.selectbox("Handedness", ["No", "Yes","Unknown"])
+    NEWINF_val = 0 if NEWINF=="No" else 1 if NEWINF=="Yes" else np.nan  #ok
+    
     INRELTO = st.number_input("Relationship", min_value=0, max_value=10, value=0)
     INLIVWTH = st.number_input("Lives With", min_value=0, max_value=10, value=0)
     INRELY = st.number_input("Dependent?", min_value=0, max_value=10, value=0)
