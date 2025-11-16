@@ -118,19 +118,66 @@ def user_input_features():
 
     
     INRELTO = st.number_input("Relationship", min_value=0, max_value=10, value=0)
-    INLIVWTH = st.number_input("Lives With", min_value=0, max_value=10, value=0)
-    INRELY = st.number_input("Dependent?", min_value=0, max_value=10, value=0)
-    NACCFAM = st.number_input("Family History", min_value=0, max_value=10, value=0)
-    NACCMOM = st.number_input("Mother Status", min_value=0, max_value=10, value=0)
-    NACCDAD = st.number_input("Father Status", min_value=0, max_value=10, value=0)
-
+    
+    INLIVWTH_options = [
+    "No",
+    "Yes",
+    "Unknown"]
+    INLIVWTH = st.selectbox("Does the co-participant live with person?", INRELY_options)
+    INLIVWTH_val = (
+    0 if INLIVWTH == "No" else
+    1 if INLIVWTH == "Yes" else
+    np.nan) #ok
+    
+    INRELY_options = [
+    "No",
+    "Yes",
+    "Unknown"]
+    INRELY = st.selectbox("How sure can you be about co-participant's answers?", INRELY_options)
+    INRELY_val = (
+    0 if INRELY == "No" else
+    1 if INRELY == "Yes" else
+    np.nan) #ok
+    
+    NACCFAM_options = [
+    "No report of family member with cognitive impairment",
+    "Family member reported to have cognitive impairment",
+    "Unknown / Not available"]
+    NACCFAM = st.selectbox("Family member Cognitive Impairment", NACCFAM_options)
+    NACCFAM_val = (
+    0 if NACCFAM == "No report of family member with cognitive impairment" else
+    1 if NACCFAM == "Family member reported to have cognitive impairment" else
+    np.nan) #ok
+    
+    NACCMOM_options = [
+    "No report of mother with cognitive impairment",
+    "Mother reported to have cognitive impairment",
+    "Unknown / Not available"]
+    NACCMOM = st.selectbox("Mother Cognitive Impairment", NACCMOM_options)
+    NACCMOM_val = (
+    0 if NACCMOM == "No report of mother with cognitive impairment" else
+    1 if NACCMOM == "Mother reported to have cognitive impairment" else
+    np.nan) #ok
+    
+    NACCDAD_options = [
+    "No report of father with cognitive impairment",
+    "Father reported to have cognitive impairment",
+    "Unknown / Not available"]
+    NACCDAD = st.selectbox("Father Cognitive Impairment", NACCDAD_options)
+    NACCDAD_val = (
+    0 if NACCDAD == "No report of father with cognitive impairment" else
+    1 if NACCDAD == "Father reported to have cognitive impairment" else
+    np.nan) #ok
+        
     ANYMEDS = st.selectbox("Taking any medications?", ["No", "Yes", "Unknown"])
-    ANYMEDS_val = 0 if ANYMEDS=="No" else 1 if ANYMEDS=="Yes" else np.nan
+    ANYMEDS_val = 0 if ANYMEDS=="No" else 1 if ANYMEDS=="Yes" else np.nan #ok
 
-    NACCAMD = st.number_input("Number of Medications", min_value=0, max_value=50, value=0)
+    NACCAMD_options = ["Unknown"] + [str(i) for i in range(0, 41)]
+    NACCAMD = st.selectbox(" Total number of medications take?",  NACCAMD_options)
+    NACCAMD_val = np.nan if NACCAMD == "Unknown" else int(NACCAMD) #ok
 
     TOBAC100 = st.selectbox("Smoked 100+ cigarettes in lifetime?", ["No", "Yes", "Unknown"])
-    TOBAC100_val = 0 if TOBAC100=="No" else 1 if TOBAC100=="Yes" else np.nan
+    TOBAC100_val = 0 if TOBAC100=="No" else 1 if TOBAC100=="Yes" else np.nan #ok
 
     SMOKYRS_options = ["Unknown"] + [str(i) for i in range(0, 88)]
     SMOKYRS = st.selectbox("Total years smoked cigarettes", SMOKYRS_options)
