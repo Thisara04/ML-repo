@@ -12,7 +12,7 @@ def dummy_predict(input_df):
 def user_input_features():
     # --- Categorical features with mappings ---
     SEX = st.selectbox("Gender", ["Male", "Female"])
-    SEX_val = 1 if SEX=="Male" else 2 if SEX=="Female" #ok
+    SEX_val = 1 if SEX=="Male" else 2 if SEX=="Female" else np.nan #ok
 
     HISPANIC = st.selectbox("Hispanic/Latino Ethnicity", ["No", "Yes", "Unknown"])
     HISPANIC_val = 0 if HISPANIC=="No" else 1 if HISPANIC=="Yes" else np.nan  #ok
