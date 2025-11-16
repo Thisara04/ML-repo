@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import joblib
 import requests
-import os
+import os 
 
 st.title("Dementia Risk Prediction")
 st.write("Enter patient details to estimate dementia risk.")
