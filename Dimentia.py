@@ -1,16 +1,32 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import joblib
+import gdown
+import os
 
 st.title("Dementia Risk Prediction")
 st.write("Enter patient details to estimate dementia risk.")
 
-# Dummy prediction function
-def dummy_predict(input_df):
-    return 0, [0.7, 0.3]  # Always predicts Non-Dementia
+MODEL_URL = "https://drive.google.com/uc?export=download&id=153VzcC2Ni-T2Pew5ne6e1zNBThNadJHV"
+MODEL_PATH = "Dementia_model.pkl"
+
+if not os.path.exists(MODEL_PATH):
+    with st.spinner("Downloading model..."):
+        gdown.download(url=MODEL_URL, output=MODEL_PATH, quiet=False)
+
+model = joblib.load(MODEL_PATH)
+
+def predict(input_df):
+    if hasattr(model, "predict_proba"):
+        prob = model.predict_proba(input_df)[0]
+        pred_class = int(np.argmax(prob))
+    else:
+        pred_class = int(model.predict(input_df)[0])
+        prob = [1 - pred_class, pred_class] 
+    return pred_class, prob
 
 def user_input_features():
-    # --- Categorical features with mappings ---
     SEX = st.selectbox("Gender", ["Male", "Female"])
     SEX_val = 1 if SEX=="Male" else 2 if SEX=="Female" else np.nan #ok
 
@@ -492,8 +508,6 @@ def user_input_features():
     3 if TRAVEL == "Dependent" else
     np.nan) #ok
 
-
-    # --- Combine all into a dict ---
     data = {
     "SEX": SEX_val, "HISPANIC": HISPANIC_val, "HISPOR": HISPOR_val, "RACE": RACE_val,
     "PRIMLANG": PRIMLANG_val, "EDUC": EDUC_val, "MARISTAT": MARISTAT_val, "NACCLIVS": NACCLIVS_val,
@@ -515,10 +529,8 @@ def user_input_features():
 
     return pd.DataFrame([data])
 
-# --- Collect input ---
 input_df = user_input_features()
 
-# --- Predict ---
 if st.button("Predict"):
     prediction, prediction_prob = dummy_predict(input_df)
     prediction_label = {0: "Non-Dementia", 1: "Risk of Dementia"}
