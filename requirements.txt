@@ -6,8 +6,5 @@ catboost
 pandas
 numpy
 imbalanced-learn
-yfinance
-altair
-pillow
 seaborn
 base64
