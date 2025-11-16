@@ -23,7 +23,12 @@ def load_model():
     model = joblib.load(MODEL_PATH)
     return model
 
-calibrated_model = load_model()
+try:
+    calibrated_model = joblib.load("ensemble_calibrated.pkl")
+except Exception as e:
+    import streamlit as st
+    st.error(f"Error loading model: {e}")
+
 
 # -------------------------------
 # Prediction mapping
