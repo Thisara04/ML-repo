@@ -2,20 +2,23 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
-import gdown
+import requests
 import os
 
 st.title("Dementia Risk Prediction")
 st.write("Enter patient details to estimate dementia risk.")
 st.write("Assist a co-participant to help the process!!.")
 
-url = "https://drive.google.com/uc?id=153VzcC2Ni-T2Pew5ne6e1zNBThNadJHV"
-output = "Dimentia_model.pkl"
-gdown.download(url, output, quiet=False, fuzzy=True)
+
+MODEL_URL = "https://huggingface.co/ThisaraAdhikari04/dementia-risk-model/resolve/main/Dimentia_model.pkl"
+MODEL_PATH = "Dementia_model.pkl"
 
 if not os.path.exists(MODEL_PATH):
     with st.spinner("Downloading model..."):
-        gdown.download(url=MODEL_URL, output=MODEL_PATH, quiet=False)
+        r = requests.get(MODEL_URL)
+        with open(MODEL_PATH, "wb") as f:
+            f.write(r.content)
+
 
 model = joblib.load(MODEL_PATH)
 
@@ -25,8 +28,9 @@ def predict(input_df):
         pred_class = int(np.argmax(prob))
     else:
         pred_class = int(model.predict(input_df)[0])
-        prob = [1 - pred_class, pred_class] 
+        prob = [1 - pred_class, pred_class]
     return pred_class, prob
+
 
 def user_input_features():
     SEX = st.selectbox("Gender", ["Male", "Female"])
